@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const TelegramBot = require("node-telegram-bot-api");
+const { clean } = require("utils/text");
 require("dotenv").config();
 
 const app = express();
@@ -35,9 +36,7 @@ app.post(webhookPath, async (req, res) => {
     const generatedText = await ask(text);
 
     // Send the generated text to user on Telegram
-    const specialChars = /([\\`\*_\{\}\[\]\(\)#\+\-\.\!])/g;
-    const escapedText = generatedText.replace(specialChars, "\\$1");
-    bot.sendMessage(id, escapedText, { parse_mode: "MarkdownV2" });
+    bot.sendMessage(id, clean(generatedText), { parse_mode: "MarkdownV2" });
 
     // Send 200 OK to Telegram
     res.status(200).send("OK");
