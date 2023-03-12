@@ -1,7 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const TelegramBot = require("node-telegram-bot-api");
-const { clean } = require("utils/text");
+const { clean } = require("./utils/text");
 require("dotenv").config();
 
 const app = express();
