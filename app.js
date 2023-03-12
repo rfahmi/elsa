@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 3000;
 
 const bot = new TelegramBot(TELEGRAM_TOKEN, { polling: false });
 
-const webhookPath = `/telegram/bot${TELEGRAM_TOKEN}`;
+const webhookPath = `/telegram/bot`;
 
 app.use(bodyParser.json());
 
