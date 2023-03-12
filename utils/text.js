@@ -1,5 +1,5 @@
 const clean = (text) => {
-  const specialChars = /([\\`*_{}\[\]\(\)#\+\-\.!$%^&?=|:";'])/g;
+  const specialChars = /([\\`*_{}\[\]\(\)#\+\-\.!$%^&?<>=|:";'])/g;
   const escapeMap = {
     "\\": "\\\\",
     "`": "\\`",

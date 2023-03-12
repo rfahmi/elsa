@@ -36,7 +36,13 @@ app.post(webhookPath, async (req, res) => {
     const generatedText = await ask(text);
 
     // Send the generated text to user on Telegram
-    bot.sendMessage(id, clean(generatedText), { parse_mode: "MarkdownV2" });
+    try {
+      console.log(clean(generatedText));
+      bot.sendMessage(id, clean(generatedText), { parse_mode: "MarkdownV2" });
+    } catch (e) {
+      console.error(e);
+      bot.sendMessage("Internal Server Error: " + e.getMessage());
+    }
 
     // Send 200 OK to Telegram
     res.status(200).send("OK");
