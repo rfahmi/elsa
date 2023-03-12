@@ -35,9 +35,9 @@ app.post(webhookPath, async (req, res) => {
     const generatedText = await ask(text);
 
     // Send the generated text to user on Telegram
-    bot.sendMessage(id, generatedText.replace(/\./g, "\\."), {
-      parse_mode: "MarkdownV2",
-    });
+    const specialChars = /([\\`\*_\{\}\[\]\(\)#\+\-\.\!])/g;
+    const escapedText = generatedText.replace(specialChars, "\\$1");
+    bot.sendMessage(id, escapedText, { parse_mode: "MarkdownV2" });
 
     // Send 200 OK to Telegram
     res.status(200).send("OK");
