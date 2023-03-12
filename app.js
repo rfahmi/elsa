@@ -40,7 +40,7 @@ app.post(webhookPath, async (req, res) => {
       bot.sendMessage(id, clean(generatedText), { parse_mode: "MarkdownV2" });
     } catch (e) {
       console.error(e);
-      bot.sendMessage(id, "Internal Server Error: " + e.getMessage());
+      bot.sendMessage(id, "Internal Server Error: " + e.message);
     }
 
     // Send 200 OK to Telegram
