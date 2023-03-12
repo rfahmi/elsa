@@ -10,7 +10,7 @@ app.use(bodyParser.json());
 
 app.get("/", async (req, res) => {
   console.error("Project root called");
-  res.send("E.L.S.A.");
+  res.send("E.L.S.A. at yout service");
 });
 
 app.post("/bot", async (req, res) => {
@@ -29,5 +29,5 @@ app.post("/bot", async (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.error(`Server berjalan pada port ${PORT}`);
+  console.error(`Server running on port ${PORT}`);
 });

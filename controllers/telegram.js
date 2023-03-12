@@ -4,7 +4,7 @@ require("dotenv").config();
 
 const TELEGRAM_TOKEN = process.env.TELEGRAM_TOKEN;
 
-const bot = new TelegramBot(TELEGRAM_TOKEN, { polling: true });
+const bot = new TelegramBot(TELEGRAM_TOKEN, { polling: false });
 
 async function sendMessage(text, chatId) {
   const generatedText = await generateText(text);
