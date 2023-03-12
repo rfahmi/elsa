@@ -1,19 +1,28 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const { sendMessage } = require("./controllers/telegram");
+const TelegramBot = require("node-telegram-bot-api");
 require("dotenv").config();
 
 const app = express();
+const TELEGRAM_TOKEN = process.env.TELEGRAM_TOKEN;
+const BASE_URL = process.env.BASE_URL;
 const PORT = process.env.PORT || 3000;
+
+const bot = new TelegramBot(TELEGRAM_TOKEN, { polling: false });
+
+const webhookPath = `/telegram/bot${TELEGRAM_TOKEN}`;
 
 app.use(bodyParser.json());
 
+// Import controller
+const { ask } = require("./controllers/telegram");
+
 app.get("/", async (req, res) => {
-  console.error("Project root called");
+  console.info("Project root called");
   res.send("E.L.S.A. at yout service");
 });
 
-app.post("/bot", async (req, res) => {
+app.post(webhookPath, async (req, res) => {
   const { message } = req.body;
 
   if (message) {
@@ -21,13 +30,24 @@ app.post("/bot", async (req, res) => {
       text,
       chat: { id },
     } = message;
-    await sendMessage(text, id);
+
+    // Call service to generate text using GPT
+    const generatedText = await ask(text);
+
+    // Send the generated text to user on Telegram
+    bot.sendMessage(id, generatedText);
+
+    // Send 200 OK to Telegram
     res.status(200).send("OK");
   } else {
+    // Send 400 Bad Request if no message received
     res.status(400).send("Bad Request");
   }
 });
 
 app.listen(PORT, () => {
-  console.error(`Server running on port ${PORT}`);
+  // Set URL webhook
+  bot.setWebHook(`${BASE_URL}${webhookPath}`);
+  console.info(`telegram bot webhook set to ${BASE_URL}${webhookPath}`);
+  console.info(`Server running on port ${PORT}`);
 });
