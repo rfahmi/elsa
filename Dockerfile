@@ -1,6 +1,8 @@
 # Image base dari Node.js
 FROM node:14
 
+USER node
+
 # Direktori kerja
 WORKDIR /app
 
