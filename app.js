@@ -4,8 +4,14 @@ const { sendMessage } = require("./controllers/telegram");
 require("dotenv").config();
 
 const app = express();
+const PORT = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
+
+app.get("/", async (req, res) => {
+  console.error("Project root called");
+  res.send("E.L.S.A.");
+});
 
 app.post("/bot", async (req, res) => {
   const { message } = req.body;
@@ -22,6 +28,6 @@ app.post("/bot", async (req, res) => {
   }
 });
 
-app.listen(3000, () => {
-  console.log("Server berjalan pada port 3000");
+app.listen(PORT, () => {
+  console.error(`Server berjalan pada port ${PORT}`);
 });
