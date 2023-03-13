@@ -28,6 +28,7 @@ const clean = (text) => {
     ":": "\\:",
     '"': '\\"',
     ";": "\\;",
+    "'": "\\'",
   };
 
   return text.replace(specialChars, (match) => {
