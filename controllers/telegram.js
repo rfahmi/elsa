@@ -1,10 +1,8 @@
-// telegramController.js
-
-const { generateText } = require("../services/gpt");
+const openai = require("../services/openai");
 
 async function ask(text) {
-  const generatedText = await generateText(text);
-  return generatedText;
+  const response = await openai.ask(text);
+  return response;
 }
 
 module.exports = { ask };

@@ -23,6 +23,12 @@ app.get("/", async (req, res) => {
   res.send("E.L.S.A. at yout service");
 });
 
+app.post("/ask", async (req, res) => {
+  const { message } = req.body;
+  let response = await ask(message);
+  res.send(response);
+});
+
 app.post(webhookPath, async (req, res) => {
   const { message } = req.body;
 
