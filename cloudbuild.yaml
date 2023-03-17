@@ -1,26 +1,40 @@
 steps:
-  # Clone source code from Github
+  # Menghapus direktori jika sudah ada
+  - name: "gcr.io/cloud-builders/gcloud"
+    entrypoint: "bash"
+    args: ["-c", "rm -rf /workspace/*"]
+  # Mengkloning repo dari branch main
   - name: "gcr.io/cloud-builders/git"
     args:
-      ["clone", "--branch", "main", "https://github.com/rfahmi/elsa.git", "."]
-
-  # Build the container image
+      - clone
+      - --depth=1
+      - --branch=main
+      - https://github.com/rfahmi/elsa.git
+      - .
+  # Build image Docker dan push ke Container Registry
   - name: "gcr.io/cloud-builders/docker"
-    args: ["build", "-t", "gcr.io/elsa-ai/elsa", "."]
-
-  # Push the container image to Google Container Registry
+    args:
+      - build
+      - -t
+      - gcr.io/elsa-ai/elsa:latest
+      - .
+      - -f
+      - Dockerfile
+    dir: "."
   - name: "gcr.io/cloud-builders/docker"
-    args: ["push", "gcr.io/elsa-ai/elsa"]
-
-  # Deploy the container image to Cloud Run
+    args: ["push", "gcr.io/elsa-ai/elsa:latest"]
+  # Deploy ke Cloud Run dengan versi terbaru
   - name: "gcr.io/cloud-builders/gcloud"
     args:
       - "run"
       - "deploy"
       - "elsa"
-      - "--image=gcr.io/elsa-ai/elsa"
-      - "--region=asia-southeast1"
-      - "--platform=managed"
+      - "--image"
+      - "gcr.io/elsa-ai/elsa:latest"
+      - "--platform"
+      - "managed"
+      - "--region"
+      - "asia-southeast1"
+      - "--project"
+      - "elsa-ai"
       - "--allow-unauthenticated"
-images:
-  - "gcr.io/elsa-ai/elsa"
