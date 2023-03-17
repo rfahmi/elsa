@@ -1,7 +1,8 @@
 steps:
   # Clone source code from Github
   - name: "gcr.io/cloud-builders/git"
-    args: ["clone", "https://github.com/rfahmi/elsa.git", "."]
+    args:
+      ["clone", "--branch", "main", "https://github.com/rfahmi/elsa.git", "."]
 
   # Build the container image
   - name: "gcr.io/cloud-builders/docker"
