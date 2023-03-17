@@ -13,7 +13,7 @@ steps:
       - "--depth=1"
       - "--branch=main"
       - "https://github.com/rfahmi/elsa.git"
-      - "."
+      - "elsa"
 
   # Build image Docker dan push ke Container Registry
   - name: "gcr.io/cloud-builders/docker"
@@ -22,7 +22,7 @@ steps:
       - "-t"
       - "gcr.io/$PROJECT_ID/elsa:$SHORT_SHA"
       - "."
-    dir: "."
+    dir: "./elsa"
 
   - name: "gcr.io/cloud-builders/docker"
     args: ["push", "gcr.io/$PROJECT_ID/elsa:$SHORT_SHA"]
