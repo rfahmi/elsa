@@ -1,25 +1,27 @@
 steps:
-  # Menghapus direktori jika sudah ada
+  # Menghapus direktori saat ini
   - name: "gcr.io/cloud-builders/gcloud"
     entrypoint: "bash"
-    args: ["-c", "rm -rf /workspace/*"]
-  # Mengkloning repo dari branch main
+    args:
+      - "-c"
+      - "rm -rf /workspace/*"
+  # Clone repo dari branch main
   - name: "gcr.io/cloud-builders/git"
     args:
-      - clone
-      - --depth=1
-      - --branch=main
-      - https://github.com/rfahmi/elsa.git
-      - .
+      - "clone"
+      - "--depth=1"
+      - "--branch=main"
+      - "https://github.com/rfahmi/elsa.git"
+      - "."
   # Build image Docker dan push ke Container Registry
   - name: "gcr.io/cloud-builders/docker"
     args:
-      - build
-      - -t
-      - gcr.io/elsa-ai/elsa:latest
-      - .
-      - -f
-      - Dockerfile
+      - "build"
+      - "-t"
+      - "gcr.io/elsa-ai/elsa:latest"
+      - "."
+      - "-f"
+      - "Dockerfile"
     dir: "."
   - name: "gcr.io/cloud-builders/docker"
     args: ["push", "gcr.io/elsa-ai/elsa:latest"]
