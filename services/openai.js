@@ -18,24 +18,18 @@ async function ask(prompt) {
     const context = await findContext(prompt);
     switch (context) {
       case "CODING":
-        response = await completion(prompt, "text-davinci-003");
+        response = await textCompletion(prompt, "text-davinci-003");
         break;
       case "SMARTHOME_CONTROL":
         response = "TODO: integrate with tuya";
         break;
       case "IMAGE_GENERATION":
-        response = "TODO: integrate with DAL-E";
+        response = await createImage(prompt);
         break;
       default:
         response = await chatCompletion(prompt, "gpt-3.5-turbo");
         break;
     }
-
-    if (response == "") {
-      response = "[Backup Response]\n";
-      response += await chatCompletion(prompt, "gpt-3.5-turbo");
-    }
-
     return response;
   } catch (error) {
     if (error.response) {
@@ -56,15 +50,25 @@ async function chatCompletion(prompt, model) {
   return completion.data.choices[0].message.content;
 }
 
-async function completion(prompt, model) {
+async function textCompletion(prompt, model) {
   const completion = await openai.createCompletion({
     model: model,
     prompt: prompt,
-    stop: "\n",
+    max_tokens: 3000,
     temperature: Number(GPT_TEMPERATURE),
   });
   console.info(completion.data.choices);
   return completion.data.choices[0].text;
+}
+
+async function createImage(prompt) {
+  const completion = await openai.createImage({
+    prompt,
+    n: 2,
+    size: "500x500",
+  });
+  console.info(completion.data.data);
+  return completion.data.data;
 }
 
 async function findContext(prompt) {

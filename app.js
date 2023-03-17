@@ -39,11 +39,17 @@ app.post(webhookPath, async (req, res) => {
     } = message;
 
     // Call service to generate text using GPT
-    const generatedText = await ask(text);
 
     // Send the generated text to user on Telegram
     try {
-      bot.sendMessage(id, clean(generatedText), { parse_mode: "MarkdownV2" });
+      const generatedText = await ask(text);
+      if (Array.isArray(generatedText)) {
+        generatedText.forEach((e) => {
+          bot.sendPhoto(id, e.url);
+        });
+      } else {
+        bot.sendMessage(id, clean(generatedText), { parse_mode: "MarkdownV2" });
+      }
     } catch (e) {
       console.error(e);
       bot.sendMessage(id, "Internal Server Error: " + e.message);

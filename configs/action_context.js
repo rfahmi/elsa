@@ -3,7 +3,7 @@ const sentences = [
   { id: "SMARTHOME_CONTROL", text: "mengontrol perangkat elektronik di rumah" },
   {
     id: "IMAGE_GENERATION",
-    text: "membuat atau mengenerate gambar berdasarkan deskripsi yang diberikan",
+    text: "membuat atau mengenerate gambar berdasarkan deskripsi yang diberikan, tapi tidak termasuk mengidentifikasi suatu gambar",
   },
 ];
 module.exports = { sentences };
