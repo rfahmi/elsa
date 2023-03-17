@@ -43,7 +43,6 @@ app.post(webhookPath, async (req, res) => {
     // Send the generated text to user on Telegram
     try {
       const generatedText = await ask(text);
-      console.warn("generated", Array.isArray(generatedText), generatedText);
       if (Array.isArray(generatedText)) {
         generatedText.forEach((e) => {
           bot.sendPhoto(id, e.url);

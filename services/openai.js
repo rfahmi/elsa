@@ -65,9 +65,8 @@ async function createImage(prompt) {
   const completion = await openai.createImage({
     prompt,
     n: 2,
-    size: "500x500",
+    size: "512x512",
   });
-  console.info(completion.data.data);
   return completion.data.data;
 }
 
