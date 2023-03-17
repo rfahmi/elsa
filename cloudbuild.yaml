@@ -1,10 +1,11 @@
 steps:
-  # Menghapus direktori saat ini
+  # Menghapus direktori bekas build
   - name: "gcr.io/cloud-builders/gcloud"
     entrypoint: "bash"
     args:
       - "-c"
       - "rm -rf /workspace/*"
+
   # Clone repo dari branch main
   - name: "gcr.io/cloud-builders/git"
     args:
@@ -13,18 +14,19 @@ steps:
       - "--branch=main"
       - "https://github.com/rfahmi/elsa.git"
       - "."
+
   # Build image Docker dan push ke Container Registry
   - name: "gcr.io/cloud-builders/docker"
     args:
       - "build"
       - "-t"
-      - "gcr.io/elsa-ai/elsa:latest"
+      - "gcr.io/$PROJECT_ID/elsa:$SHORT_SHA"
       - "."
-      - "-f"
-      - "Dockerfile"
     dir: "."
+
   - name: "gcr.io/cloud-builders/docker"
-    args: ["push", "gcr.io/elsa-ai/elsa:latest"]
+    args: ["push", "gcr.io/$PROJECT_ID/elsa:$SHORT_SHA"]
+
   # Deploy ke Cloud Run dengan versi terbaru
   - name: "gcr.io/cloud-builders/gcloud"
     args:
@@ -32,11 +34,11 @@ steps:
       - "deploy"
       - "elsa"
       - "--image"
-      - "gcr.io/elsa-ai/elsa:latest"
+      - "gcr.io/$PROJECT_ID/elsa:$SHORT_SHA"
       - "--platform"
       - "managed"
       - "--region"
       - "asia-southeast1"
       - "--project"
-      - "elsa-ai"
+      - "$PROJECT_ID"
       - "--allow-unauthenticated"
