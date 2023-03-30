@@ -15,7 +15,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: rfahmi/elsa:$(echo $(jq -r '.version' package.json) | sed 's/\//_/g')
+          tags: rfahmi/elsa:0.0.1
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
