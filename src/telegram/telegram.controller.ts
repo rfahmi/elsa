@@ -8,10 +8,10 @@ export class TelegramController {
   @Post('webhook')
   async webhook(@Body() body: any): Promise<any> {
     const { message } = body;
-    if (message && message.text === 'a') {
+    if (message) {
+      const text = message.text;
       const chatId = message.chat.id;
-      const reply = 'b';
-      await this.telegramService.sendMessage(chatId, reply);
+      await this.telegramService.sendMessage(chatId, text);
     }
     return { ok: true };
   }
