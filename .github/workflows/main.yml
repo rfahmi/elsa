@@ -23,13 +23,12 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          tags: rfahmi/elsa:${{ steps.package-version.outputs.version }}
+          tags: rfahmi/elsa:v${{ steps.package-version.outputs.version }}
       - name: Set up Google Cloud SDK
         uses: google-github-actions/setup-gcloud@v0.3.0
         with:
           project_id: ${{ secrets.GCLOUD_PROJECT_ID }}
           service_account_key: ${{ secrets.GCLOUD_AUTH }}
-
       - name: Deploy Docker image to Cloud Run
         run: |
-          gcloud run deploy elsa --image rfahmi/elsa:${{ steps.package-version.outputs.version }} --platform managed --region asia-southeast1
+          gcloud run deploy elsa --image rfahmi/elsa:v${{ steps.package-version.outputs.version }} --platform managed --region asia-southeast1
