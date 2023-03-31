@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { OpenaiService } from 'src/openai/openai.service';
 import { Telegraf } from 'telegraf';
+import { clean } from 'utils/text';
 
 @Injectable()
 export class TelegramService {
@@ -11,7 +12,16 @@ export class TelegramService {
   async sendMessage(chatId: number, message: string): Promise<void> {
     const response = await this.openaiService
       .ask(message)
-      .catch((e) => e.getMessage());
-    await this.bot.telegram.sendMessage(chatId, response);
+      .catch((e) => e.message);
+
+    if (Array.isArray(response)) {
+      response.forEach(async (e) => {
+        await this.bot.telegram.sendPhoto(chatId, e.url);
+      });
+    } else {
+      await this.bot.telegram.sendMessage(chatId, clean(response), {
+        parse_mode: 'MarkdownV2',
+      });
+    }
   }
 }

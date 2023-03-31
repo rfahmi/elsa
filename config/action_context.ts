@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 export const contexts = [
   { id: 'CODING', text: 'membuat kode program dengan bahasa pemrograman' },
   { id: 'SMARTHOME_CONTROL', text: 'mengontrol perangkat elektronik di rumah' },
